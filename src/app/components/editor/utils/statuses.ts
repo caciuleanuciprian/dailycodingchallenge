@@ -1,3 +1,5 @@
+"use client";
+
 export const statuses = [
   {
     id: 1,

@@ -1,3 +1,5 @@
+"use client";
+
 export const codingChallenges = [
   {
     id: 1,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CodeEditorWindow from "./codeEditorWindow";
 import { languageOptions } from "./utils/languageOptions";
 import OutputWindow from "./outputWindow";
@@ -51,14 +51,12 @@ const EditorContainer = () => {
     axios
       .request(options)
       .then(function (response) {
-        console.log("res.data", response.data);
         const token = response.data.token;
         checkStatus(token);
       })
       .catch((err) => {
         let error = err.response ? err.response.data : err;
         setProcessing(false);
-        console.log(error);
       });
   };
 
@@ -82,19 +80,15 @@ const EditorContainer = () => {
       } else {
         setProcessing(false);
         setOutputDetails(response.data);
-        console.log("toast, succesfull");
-        console.log("response.data", response.data);
         return;
       }
     } catch (err) {
-      console.log("err", err);
       setProcessing(false);
-      console.log("toast, bad");
     }
   };
 
   return (
-    <div className="mx-auto max-w-screen-2xl px-2 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-screen-2xl px-2 sm:px-6 lg:px-8 drop-shadow-xl">
       <div className="flex">
         <div className="flex w-[75%] h-[50vh]">
           <CodeEditorWindow
@@ -103,20 +97,27 @@ const EditorContainer = () => {
             language={language?.value}
           />
         </div>
-        <div className="flex w-[25%] flex-col">
-          <div className="flex px-4 py-4 gap-4">
-            <LanguagesDropdown onSelectChange={onSelectChange} />
-            <button onClick={handleCompile} disabled={!code}>
-              {processing ? "Processing..." : "Compile and Execute"}
+        <div className="bg-[#29374a] flex w-[25%] flex-col">
+          <div className="flex px-4 py-4 gap-2">
+            <LanguagesDropdown
+              id={Math.random()}
+              onSelectChange={onSelectChange}
+            />
+            <button
+              className=" text-white text-sm bg-gray-900 px-4 w-full hover:bg-gray-500"
+              onClick={handleCompile}
+              disabled={!code || processing}
+            >
+              {processing ? "Processing..." : "Run"}
             </button>
           </div>
-          <div className="flex px-4 py-4 gap-4 h-full">
+          <div className="bg-[#29374a] flex h-full">
             <Prompt />
           </div>
         </div>
       </div>
-      <div className="flex bg-white">
-        <OutputWindow outputDetails={outputDetails} />
+      <div className="flex bg-[#29374a]">
+        <OutputWindow processing={processing} outputDetails={outputDetails} />
         <OutputDetails outputDetails={outputDetails} />
       </div>
     </div>

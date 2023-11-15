@@ -62,6 +62,7 @@ export default function Navbar({ active }: NavbarProps) {
                 </div>
               </div>
             </div>
+            <hr />
           </div>
 
           <Disclosure.Panel className="sm:hidden">
@@ -73,8 +74,8 @@ export default function Navbar({ active }: NavbarProps) {
                   href={item.href}
                   className={classNames(
                     item.index === active
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      ? "bg-gray-300 text-white"
+                      : "text-white bg-gray-300 hover:bg-gray-700 hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.index ? "page" : undefined}
@@ -82,6 +83,7 @@ export default function Navbar({ active }: NavbarProps) {
                   {item.name}
                 </Disclosure.Button>
               ))}
+              <hr />
             </div>
           </Disclosure.Panel>
         </>

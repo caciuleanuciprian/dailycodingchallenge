@@ -1,4 +1,11 @@
-const OutputWindow = ({ outputDetails }: any) => {
+import {
+  solution,
+  solutionGameDate,
+  solutionIndex,
+  tomorrow,
+} from "../editor/utils/state";
+
+const OutputWindow = ({ outputDetails, processing }: any) => {
   const getOutput = () => {
     let statusId = outputDetails?.status?.id;
 
@@ -10,13 +17,21 @@ const OutputWindow = ({ outputDetails }: any) => {
         </pre>
       );
     } else if (statusId === 3) {
-      return (
-        <pre className="px-2 py-1 font-normal text-xs text-green-500">
-          {atob(outputDetails.stdout) !== null
-            ? `${atob(outputDetails.stdout)}`
-            : null}
-        </pre>
-      );
+      for (let i = 0; i < solution.examples.length; i++) {
+        if (solution.examples[i].output == atob(outputDetails.stdout)) {
+          return (
+            <pre className="px-2 py-1 font-normal text-xs text-green-500">
+              {atob(outputDetails.stdout)}
+            </pre>
+          );
+        } else {
+          return (
+            <pre className="px-2 py-1 font-normal text-xs text-red-500">
+              {atob(outputDetails.stdout)}
+            </pre>
+          );
+        }
+      }
     } else if (statusId === 5) {
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
@@ -32,8 +47,11 @@ const OutputWindow = ({ outputDetails }: any) => {
     }
   };
   return (
-    <div className="w-[75%] h-48 bg-[#1e293b] rounded-md text-white font-normal text-sm overflow-y-auto">
-      {outputDetails ? <>{getOutput()}</> : null}
+    <div className="flex w-[75%] h-60 bg-gray-900 flex-col text-white font-normal text-sm">
+      <p className="py-2 pl-2">Output:</p>
+      <div className="w-full h-full bg-gray-900 text-white font-normal text-sm overflow-y-auto">
+        {outputDetails && <>{getOutput()}</>}
+      </div>
     </div>
   );
 };
