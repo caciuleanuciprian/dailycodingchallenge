@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React from "react";
 import Select from "react-select";
 import { languageOptions } from "./utils/languageOptions";
+import dynamic from "next/dynamic";
+import Loader from "../ui/loader";
 
-const LanguagesDropdown = ({ onSelectChange }: any) => {
-  // fix for stupid next.js console error message
-  const id = Date.now().toString();
-  const [isMounted, setIsMounted] = useState(false);
+const AsyncSelect = dynamic(() => import("react-select"), {
+  ssr: false,
+  loading: () => <Loader />, // doing this approach mostly for practicing
+});
 
-  useEffect(() => setIsMounted(true), []);
-
-  return isMounted ? (
-    <Select
-      id={Date.now().toString()}
+const LanguagesDropdown = ({ onSelectChange, id }: any) => {
+  return (
+    <AsyncSelect
       placeholder={`Filter By Category`}
       options={languageOptions}
       defaultValue={languageOptions[0]}
       onChange={(selectedOption) => onSelectChange(selectedOption)}
     />
-  ) : null;
+  );
 };
 
 export default LanguagesDropdown;
